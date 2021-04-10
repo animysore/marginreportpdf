@@ -1,7 +1,8 @@
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const fetch = require('node-fetch');
+const unzipper = require('unzipper');
+
 const OAuth2 = google.auth.OAuth2;
 
 exports.handler = async function(event, context, callback) {
@@ -10,8 +11,8 @@ exports.handler = async function(event, context, callback) {
   const filename = zipname.match(/[0-9]*_dms_[0-9]*\./g)[0].toUpperCase() + 'htm';
   
   try {
-    await exec(`curl ${url} --output ${zipname}`);
-    await exec(`unzip ${zipname}`);
+    const res = await fetch(url);
+    res.body.pipe(unzipper.Extract({ path: './' }));
   } catch (e) {
     console.error(e); // should contain code (exit code) and signal (that caused the termination).
   }
