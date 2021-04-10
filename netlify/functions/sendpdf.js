@@ -1,8 +1,11 @@
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const OAuth2 = google.auth.OAuth2;
 
 exports.handler = async function(event, context, callback) {
+  /* 
   const { AttachmentUrl: url } = JSON.parse(event.body);
   const zipname = url.match(/[0-9]*-[0-9]*_dms_[0-9]*\.zip/g)[0];
   const filename = zipname.match(/[0-9]*_dms_[0-9]*\./g)[0].toUpperCase() + 'htm';
@@ -13,6 +16,12 @@ exports.handler = async function(event, context, callback) {
   } catch (e) {
     console.error(e); // should contain code (exit code) and signal (that caused the termination).
   }
+  */
+  const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground" // Redirect URL
+  );
   
   let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -32,11 +41,11 @@ exports.handler = async function(event, context, callback) {
   transporter.sendMail({
     from: process.env.MAIL_LOGIN,
     to: process.env.MAIL_TO,
-    subject: process.env.SUBJECT + new Date().toLocaleString(),
+    subject: "Margin Statement: " + new Date().toLocaleString(),
     text: event.body
-    attachments: [{
-      path: filename
-    }]
+    //attachments: [{
+    //  path: filename
+    //}]
   }, function(error, info) {
     if (error) {
       callback(error);
