@@ -1,0 +1,14 @@
+{
+  "name": "marginreportpdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sendpdf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aniruddha Mysore",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^6.5.0"
+  }
+}
