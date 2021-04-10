@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 
-exports.handler = function(event, context, callback) {
+exports.handler = async function(event, context, callback) {
   const { AttachmentUrl: url } = JSON.parse(event.body);
   const zipname = url.match(/[0-9]*-[0-9]*_dms_[0-9]*\.zip/g)[0];
   const filename = zipname.match(/[0-9]*_dms_[0-9]*\./g)[0].toUpperCase() + 'htm';
