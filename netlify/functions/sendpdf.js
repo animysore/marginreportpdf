@@ -45,22 +45,20 @@ exports.handler = async function(event, context, callback) {
   console.log(event.body);
   console.log(process.env.MAIL_LOGIN)
   
-  transporter.sendMail({
-    from: process.env.MAIL_LOGIN,
-    to: process.env.MAIL_TO,
-    subject: "Margin Statement: " + new Date().toLocaleString(),
-    text: " Margin statement attached! ",
-    attachments: [{
-      path: filename
-    }],
-  }, function(error, info) {
-    if (error) {
-      callback(error);
-    } else {
-      callback(null, {
-        statusCode: 200,
-        body: "Ok"
-      });
-    }
-  });
+  try { 
+    const res = await transporter.sendMail({
+      from: process.env.MAIL_LOGIN,
+      to: process.env.MAIL_TO,
+      subject: "Margin Statement: " + new Date().toLocaleString(),
+      text: " Margin statement attached! ",
+      attachments: [{
+        path: filename
+      }],
+    });
+    console.log(res);
+    callback(null, { statusCode: 200, body: "Ok" });
+  } catch (error) {
+    console.error(error);
+    callback(error);
+  }
 }
