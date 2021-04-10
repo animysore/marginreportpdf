@@ -10,7 +10,7 @@ exports.handler = async function(event, context, callback) {
   const filename = zipname.match(/[0-9]*_dms_[0-9]*\./g)[0].toUpperCase() + 'htm';
   
   try {
-    await exec(`wget ${url} -O ${zipname}`);
+    await exec(`curl ${url} --output ${zipname}`);
     await exec(`unzip ${zipname}`);
   } catch (e) {
     console.error(e); // should contain code (exit code) and signal (that caused the termination).
