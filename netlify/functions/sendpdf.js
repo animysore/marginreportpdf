@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+// const exec = util.promisify(require('child_process').exec);
 const OAuth2 = google.auth.OAuth2;
 
 exports.handler = async function(event, context, callback) {
@@ -22,8 +22,12 @@ exports.handler = async function(event, context, callback) {
     process.env.CLIENT_SECRET,
     "https://developers.google.com/oauthplayground" // Redirect URL
   );
-  
-  const accessToken = oauth2Client.getAccessToken();
+
+  oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN
+  });
+
+  const accessToken = await oauth2Client.getAccessToken();
 
   let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -45,9 +49,9 @@ exports.handler = async function(event, context, callback) {
     to: process.env.MAIL_TO,
     subject: "Margin Statement: " + new Date().toLocaleString(),
     text: event.body
-    //attachments: [{
-    //  path: filename
-    //}]
+    /* attachments: [{
+      path: filename
+    }] */
   }, function(error, info) {
     if (error) {
       callback(error);
