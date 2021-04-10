@@ -23,6 +23,8 @@ exports.handler = async function(event, context, callback) {
     "https://developers.google.com/oauthplayground" // Redirect URL
   );
   
+  const accessToken = oauth2Client.getAccessToken();
+
   let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -33,7 +35,7 @@ exports.handler = async function(event, context, callback) {
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       refreshToken: process.env.REFRESH_TOKEN,
-      accessToken: process.env.ACCESS_TOKEN
+      accessToken
     }
   });
   console.log(event.body);
