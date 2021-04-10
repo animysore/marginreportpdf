@@ -43,6 +43,7 @@ exports.handler = async function(event, context, callback) {
     }
   });
   console.log(event.body);
+  console.log(process.env.MAIL_LOGIN)
   
   transporter.sendMail({
     from: process.env.MAIL_LOGIN,
