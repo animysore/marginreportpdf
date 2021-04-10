@@ -12,7 +12,7 @@ exports.handler = async function(event, context, callback) {
   
   try {
     const res = await fetch(url);
-    res.body.pipe(unzipper.Extract({ path: './' }));
+    res.body.pipe(unzipper.Extract({ path: '/tmp/' }));
   } catch (e) {
     console.error(e); // should contain code (exit code) and signal (that caused the termination).
   }
@@ -52,7 +52,7 @@ exports.handler = async function(event, context, callback) {
       subject: "Margin Statement: " + new Date().toLocaleString(),
       text: " Margin statement attached! ",
       attachments: [{
-        path: filename
+        path: `/tmp/${filename}`
       }],
     });
     console.log(res);
