@@ -7,8 +7,8 @@ const OAuth2 = google.auth.OAuth2;
 
 exports.handler = async function(event, context, callback) {
   const { AttachmentUrl: url } = JSON.parse(event.body);
-  const zipname = url.match(/[0-9]*-[0-9]*_dms_[0-9]*\.zip/g)[0];
-  const filename = zipname.match(/[0-9]*_dms_[0-9]*\./g)[0].toUpperCase() + 'htm';
+  const zipname = url.match(/[0-9]*-[0-9]*_[a-z].*_[0-9]*\.zip/g)[0];
+  const filename = zipname.match(/[0-9]*_[a-z].*_[0-9]*\./g)[0].toUpperCase() + 'htm';
   
   try {
     const res = await fetch(url);
